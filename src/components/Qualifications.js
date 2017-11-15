@@ -6,7 +6,7 @@ import QualGroups from "./QualGroups"
 const CentreQualifications = props => 
     <div>
         <InputSubmit submitAction={props.addQualification}/>
-        <QualGroups />
+        <QualGroups {...props} groups={props.selectedQualGroups}/>
         <DropDownSubmit options={props.units} submitAction={props.addUnitToQualification} />
     </div>
 

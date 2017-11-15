@@ -64,11 +64,11 @@ export var initialData = {
     },
     '3': {
       qualId: '1',
-      units: ['9', '10'],
+      units: ['9'],
     },
     '4': {
       qualId: '1',
-      units: ['6', '8'],
+      units: ['6', '8', '10'],
     },
   },
 
@@ -119,3 +119,8 @@ export default (state = initialData, action) => {
       return state
   }
 }
+
+export const getQualificationGroups = state => 
+  getQualGroups(
+    state.qualReducer.selectedQual, state.qualReducer.groups ).map(
+      groupId => ({...state.qualReducer.groups[groupId], groupId}))
