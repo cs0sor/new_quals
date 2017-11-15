@@ -1,1 +1,1 @@
-*** New Quals ***
+New SFEDI Quals category system
