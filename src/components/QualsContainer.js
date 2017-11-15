@@ -15,10 +15,10 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = dispatch => 
     bindActionCreators({
         ...QualificationActions,
-    }, dispatch);
+    }, dispatch)
 
 const ChoiceListsContainer = connect(mapStateToProps, mapDispatchToProps)(
     Container
-);
+)
 
-export default ChoiceListsContainer;
+export default ChoiceListsContainer

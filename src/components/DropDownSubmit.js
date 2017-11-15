@@ -1,15 +1,15 @@
-import FormControl from "react-bootstrap/lib/FormControl";
-import Button from 'react-bootstrap/lib/Button';
-import React from "react";
+import FormControl from "react-bootstrap/lib/FormControl"
+import Button from 'react-bootstrap/lib/Button'
+import React from "react"
 
 export default class DropDownSubmit extends React.Component {
     
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             selected: Object.keys(this.props.options)[0]}
-        this.handleAdd = this.handleAdd.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleAdd = this.handleAdd.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
     }
 
     handleSubmit(e) {
@@ -17,7 +17,7 @@ export default class DropDownSubmit extends React.Component {
     }
 
     handleAdd(e) {
-        this.setState({selected: e.target.value});
+        this.setState({selected: e.target.value})
     }
 
     render() {

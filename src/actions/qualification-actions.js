@@ -1,10 +1,10 @@
-import * as types from './action-types';
+import * as types from './action-types'
 
 export const addQualification = (title) => {
   return {
     type: types.ADD_QUALIFICATION,
     title
-  };
+  }
 }
 
 export const addUnitToQualification = (selected) => {

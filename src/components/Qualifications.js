@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 import InputSubmit from "./InputSubmit"
 import DropDownSubmit from "./DropDownSubmit"
 import QualGroups from "./QualGroups"

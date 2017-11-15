@@ -1,5 +1,5 @@
-import * as types from '../actions/action-types';
-import warning from 'warning';
+import * as types from '../actions/action-types'
+import warning from 'warning'
 
 const MANDITORY = 'MANDITORY'
 const OPTIONAL = 'OPTIONAL'
@@ -24,7 +24,7 @@ export const addUnitToGroup = (unit, selectedGroup, selectedQual, allGroups) => 
       units: Array.from(new Set(allGroups[selectedGroup].units.concat(unit)))
     }}
     :
-    // if the selected group is not in the qual group warn and return origin group
+    // if the selected group is not in the qual group warn and return original group
     (warning(
         true,
         `Could not find group with key ${selectedGroup} in
@@ -117,6 +117,6 @@ export default (state = initialData, action) => {
           ...state,
           groups: newGroups}
     default:
-      return state;
+      return state
   }
-};
+}

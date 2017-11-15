@@ -1,18 +1,18 @@
-import FormControl from "react-bootstrap/lib/FormControl";
-import Button from 'react-bootstrap/lib/Button';
-import React from "react";
+import FormControl from "react-bootstrap/lib/FormControl"
+import Button from 'react-bootstrap/lib/Button'
+import React from "react"
 
 export default class InputSubmit extends React.Component {
     
     constructor(props) {
-        super(props);
+        super(props)
         this.state = { title: ''}
-        this.handleUpdate = this.handleUpdate.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleUpdate = this.handleUpdate.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
     }
 
     handleUpdate(e) {
-        this.setState({title: e.target.value});
+        this.setState({title: e.target.value})
     }
 
     handleSubmit(e) {
