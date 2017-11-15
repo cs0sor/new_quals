@@ -112,7 +112,6 @@ export default (state = initialData, action) => {
         const newGroups = addUnitToGroup(
           action.selected, state.selectedGroup,
           state.selectedQual, state.groups)
-        console.log(newGroups) 
         return {
           ...state,
           groups: newGroups}
