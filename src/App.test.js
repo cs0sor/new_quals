@@ -9,10 +9,10 @@ import { Provider } from 'react-redux'
 Enzyme.configure({ adapter: new Adapter() })
 
 it('App doesnt crash the app', () => {
-  const store = configureStore()
-  renderer.create(
-    <Provider store={store}>
-      <App />
-    </Provider>
-  )
+	const store = configureStore()
+	renderer.create(
+		<Provider store={store}>
+			<App />
+		</Provider>
+	)
 })
