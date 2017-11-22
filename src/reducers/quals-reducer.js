@@ -123,6 +123,14 @@ export default (state = initialData, action) => {
 	}
 }
 
+export const getGroupedUnits = (state, qualId) => {
+	const mmap = Object.entries(state.groups)
+		.filter((item) => item[1].qualId === qualId)
+    .map((entry) => entry[1].units.map((unit) => [ unit, entry[0] ]))
+
+	return [].concat.apply([], mmap).reduce((result, value) => ({ ...result, [value[0]]: value[1] }), {})
+}
+
 export const getQualificationGroups = (state) =>
 	getQualGroups(state.qualReducer.selectedQual, state.qualReducer.groups).map((groupId) => ({
 		...state.qualReducer.groups[groupId],
