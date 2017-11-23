@@ -123,10 +123,10 @@ export default (state = initialData, action) => {
 	}
 }
 
-export const getGroupedUnits = (state, qualId) => {
+export const getSelectedGroupedUnits = (state) => {
 	const mmap = Object.entries(state.groups)
-		.filter((item) => item[1].qualId === qualId)
-    .map((entry) => entry[1].units.map((unit) => [ unit, entry[0] ]))
+		.filter((item) => item[1].qualId === state.selectedQual)
+		.map((entry) => entry[1].units.map((unit) => [ unit, entry[0] ]))
 
 	return [].concat.apply([], mmap).reduce((result, value) => ({ ...result, [value[0]]: value[1] }), {})
 }

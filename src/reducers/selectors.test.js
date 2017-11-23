@@ -1,6 +1,6 @@
-import { getGroupedUnits } from './quals-reducer'
+import { getSelectedGroupedUnits } from './quals-reducer'
 
-it('group units based on group and qual', () => {
+it('groups units based on group and qual', () => {
 
 	const state = {
 		groups: {
@@ -20,11 +20,12 @@ it('group units based on group and qual', () => {
         qualId: '2',
         units: ['1', '2', '3']
       }
-		}
+    },
+    selectedQual: '1',
   }
   
   const expectResult = { '1': '1', '3': '1', '5': '2', '7': '2', '9': '3' }
 
-  expect(getGroupedUnits(state, '1')).toEqual(expectResult)
+  expect(getSelectedGroupedUnits(state)).toEqual(expectResult)
 
 })
