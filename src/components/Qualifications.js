@@ -2,15 +2,24 @@ import React from 'react'
 import InputSubmit from './InputSubmit'
 import DropDownSubmit from './DropDownSubmit'
 import QualGroups from './QualGroups'
-import Units from './Units'
+import UnitsContainer from './UnitsContainer'
+import * as Bootstrap from 'react-bootstrap/lib/'
 
-const CentreQualifications = (props) => (
-	<div>
+const Qualifications = (props) => (
+	<Bootstrap.Grid>
 		{/* <InputSubmit submitAction={props.addQualification} /> */}
-		{/* <QualGroups {...props} groups={props.selectedQualGroups} /> */}
 		{/* <DropDownSubmit options={props.units} submitAction={props.addUnitToQualification} /> */}
-		<Units {...props} />
-	</div>
+		<Bootstrap.Col md={6}>
+			<UnitsContainer {...props} />
+			<Bootstrap.Button
+				onClick={ e => props.addNewGroup() }>
+				Add Group
+			</Bootstrap.Button>
+		</Bootstrap.Col>
+		<Bootstrap.Col md={6}>
+			<QualGroups {...props} groups={props.selectedQualGroups} />
+		</Bootstrap.Col>
+	</Bootstrap.Grid>
 )
 
-export default CentreQualifications
+export default Qualifications

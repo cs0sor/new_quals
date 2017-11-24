@@ -42,16 +42,16 @@ export var initialData = {
 	selectedQual: '1',
 	selectedGroup: '10',
 	units: {
-		'1': 'Unit 1',
-		'2': 'Unit 2',
-		'3': 'Unit 3',
-		'4': 'Unit 4',
-		'5': 'Unit 5',
-		'6': 'Unit 6',
-		'7': 'Unit 7',
-		'8': 'Unit 8',
-		'9': 'Unit 9',
-		'10': 'Unit 10'
+		'1': { name: 'Unit 1' },
+		'2': { name: 'Unit 2' },
+		'3': { name: 'Unit 3' },
+		'4': { name: 'Unit 4' },
+		'5': { name: 'Unit 5' },
+		'6': { name: 'Unit 6' },
+		'7': { name: 'Unit 7' },
+		'8': { name: 'Unit 8' },
+		'9': { name: 'Unit 9' },
+		'10': { name: 'Unit 10' }
 	},
 
 	groups: {
@@ -118,19 +118,48 @@ export default (state = initialData, action) => {
 				...state,
 				groups: newGroups
 			}
+		case types.ADD_UNIT_TO_GROUP:
+			const updatedGroup = {
+				...state.groups[action.selected.groupId],
+				units: state.groups[action.selected.groupId].units.concat(action.selected.unitId)
+			}
+
+			return { ...state, groups: { ...state.groups, [action.selected.groupId]: updatedGroup } }
+
+		case types.REMOVE_UNIT_FROM_GROUP:
+			const deletedUnitGroup = {
+				...state.groups[action.selected.groupId],
+				units: [
+					...state.groups[action.selected.groupId].units.filter((unit) => unit !== action.selected.unitId)
+				]
+			}
+			return { ...state, groups: { ...state.groups, [action.selected.groupId]: deletedUnitGroup } }
+		case types.ADD_NEW_GROUP:
+			return {
+				...state,
+				groups: { ...state.groups, [nextObjKey(state.groups)]: { qualId: state.selectedQual, units: [] } }
+			}
 		default:
 			return state
 	}
 }
 
+// Given a teh state of selectedQualId, this iterates through groups generating a key value pair of unit:group
 export const getSelectedGroupedUnits = (state) => {
 	const mmap = Object.entries(state.groups)
 		.filter((item) => item[1].qualId === state.selectedQual)
 		.map((entry) => entry[1].units.map((unit) => [ unit, entry[0] ]))
-
 	return [].concat.apply([], mmap).reduce((result, value) => ({ ...result, [value[0]]: value[1] }), {})
 }
 
+// Given a qual id, this iterates through groups generating a key value pair of unit:group but
+// also adds those units not in groups and gives them the key:value of key:undefined
+export const getAllGroupedUnits = (state) => {
+	const groupedUnits = getSelectedGroupedUnits(state)
+	return { ...Object.keys(state.units).reduce((result, v) => ({ ...result, [v]: undefined }), {}), ...groupedUnits }
+}
+
+// Returns the groups based on selected qualification
 export const getQualificationGroups = (state) =>
 	getQualGroups(state.qualReducer.selectedQual, state.qualReducer.groups).map((groupId) => ({
 		...state.qualReducer.groups[groupId],

@@ -1,2 +1,10 @@
+// Qualification
 export const ADD_QUALIFICATION = 'ADD_QUALIFICATION'
 export const ADD_UNIT_TO_QUALIFICATION = 'ADD_UNIT_TO_QUALIFICATION'
+
+// Units
+export const ADD_UNIT_TO_GROUP = 'ADD_UNIT_TO_GROUP'
+export const REMOVE_UNIT_FROM_GROUP = 'REMOVE_UNIT_FROM_GROUP'
+
+// Groups
+export const ADD_NEW_GROUP = 'ADD_NEW_GROUP'
