@@ -22,7 +22,7 @@ const Body = (props) => (
 
 const Button = (props) =>
 	props.unit[1] ? (
-		<Bootstrap.Button onClick={(e) => props.removeUnitFromGroup({groupId: props.unit[1], unitId: props.unit[0]})}>
+		<Bootstrap.Button onClick={(e) => props.removeUnitFromGroup({ groupId: props.unit[1], unitId: props.unit[0] })}>
 			Remove From Group {props.unit[1]}
 		</Bootstrap.Button>
 	) : (
@@ -34,7 +34,7 @@ const GroupSelectButton = (props) => (
 		title="Add Unit"
 		key={props.unit[1]}
 		id="split-button-basic-Danger"
-		onSelect={(groupId) => props.addUnitToGroup({unitId: props.unit[0], groupId: groupId})}
+		onSelect={(groupId) => props.addUnitToGroup({ unitId: props.unit[0], groupId: groupId })}
 	>
 		{props.selectedQualGroups.map((group) => (
 			<Bootstrap.MenuItem eventKey={group.groupId} key={group.groupId}>

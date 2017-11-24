@@ -8,18 +8,18 @@ import * as UnitActions from '../actions/unit-actions'
 const Container = (props) => <Units {...props} />
 
 const mapStateToProps = (state, ownProps) => ({
-    units: state.qualReducer.units,
-    groups: state.qualReducer.groups,
-    unitsGrouped: getAllGroupedUnits(state.qualReducer),
+	units: state.qualReducer.units,
+	groups: state.qualReducer.groups,
+	unitsGrouped: getAllGroupedUnits(state.qualReducer)
 })
 
 const mapDispatchToProps = (dispatch) =>
-bindActionCreators(
-    {
-        ...UnitActions
-    },
-    dispatch
-)
+	bindActionCreators(
+		{
+			...UnitActions
+		},
+		dispatch
+	)
 
 const UnitsContainer = connect(mapStateToProps, mapDispatchToProps)(Container)
 

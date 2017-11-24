@@ -11,10 +11,7 @@ const Qualifications = (props) => (
 		{/* <DropDownSubmit options={props.units} submitAction={props.addUnitToQualification} /> */}
 		<Bootstrap.Col md={6}>
 			<UnitsContainer {...props} />
-			<Bootstrap.Button
-				onClick={ e => props.addNewGroup() }>
-				Add Group
-			</Bootstrap.Button>
+			<Bootstrap.Button onClick={(e) => props.addNewGroup()}>Add Group</Bootstrap.Button>
 		</Bootstrap.Col>
 		<Bootstrap.Col md={6}>
 			<QualGroups {...props} groups={props.selectedQualGroups} />

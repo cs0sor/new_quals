@@ -18,7 +18,8 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch) =>
 	bindActionCreators(
 		{
-			...QualificationActions, ...GroupActions
+			...QualificationActions,
+			...GroupActions
 		},
 		dispatch
 	)
