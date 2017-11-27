@@ -22,7 +22,7 @@ const Body = (props) => (
 
 const Button = (props) =>
 	props.unit[1] ? (
-		<Bootstrap.Button onClick={(e) => props.removeUnitFromGroup({ groupId: props.unit[1], unitId: props.unit[0] })}>
+		<Bootstrap.Button id={`remove-group-${props.unit[0]}`} onClick={(e) => props.removeUnitFromGroup({ groupId: props.unit[1], unitId: props.unit[0] })}>
 			Remove From Group {props.unit[1]}
 		</Bootstrap.Button>
 	) : (
@@ -33,11 +33,11 @@ const GroupSelectButton = (props) => (
 	<Bootstrap.DropdownButton
 		title="Add Unit"
 		key={props.unit[1]}
-		id="split-button-basic-Danger"
+		id={`split-button-basic-Danger-${props.unit[0]}`}
 		onSelect={(groupId) => props.addUnitToGroup({ unitId: props.unit[0], groupId: groupId })}
 	>
 		{props.selectedQualGroups.map((group) => (
-			<Bootstrap.MenuItem eventKey={group.groupId} key={group.groupId}>
+			<Bootstrap.MenuItem id={`add-group-menu-item-${props.unit[0]}-${group.groupId}`} eventKey={group.groupId} key={group.groupId}>
 				to Group {group.groupId}
 			</Bootstrap.MenuItem>
 		))}

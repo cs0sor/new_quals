@@ -144,6 +144,7 @@ export default (state = initialData, action) => {
 	}
 }
 
+
 // Given a teh state of selectedQualId, this iterates through groups generating a key value pair of unit:group
 export const getSelectedGroupedUnits = (state) => {
 	const mmap = Object.entries(state.groups)
