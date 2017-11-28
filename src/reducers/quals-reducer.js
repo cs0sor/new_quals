@@ -70,7 +70,7 @@ export var initialData = {
 		'4': {
 			qualId: '1',
 			units: [ '6', '8', '10' ]
-		},
+		}
 	},
 
 	criteria: {
@@ -143,13 +143,23 @@ export default (state = initialData, action) => {
 			return {
 				...state,
 				groups: { ...state.groups, [newGroupKey]: { qualId: state.selectedQual, units: [] } },
-				criteria: {...state.criteria, [newCriteriaKey]: {qualId: state.selectedQual, type: OPTIONAL, groups:[newGroupKey,]}}
+				criteria: {
+					...state.criteria,
+					[newCriteriaKey]: { qualId: state.selectedQual, type: OPTIONAL, groups: [ newGroupKey ] }
+				}
 			}
 		case types.SPLIT_FROM_CRITERIA:
-			const critGroupRemoved = {...state.criteria[action.criteriaId], groups: state.criteria[action.criteriaId].groups.filter(groupId => groupId !== action.groupId)}
-			const newCriteria = {qualId: state.selectedQual, type: OPTIONAL, groups:[action.groupId]}
-			const amendedCriterias = {...state.criteria, [action.criteriaId]: critGroupRemoved, [nextObjKey(state.criteria)]: newCriteria}
-			return {...state, criteria: amendedCriterias}
+			const critGroupRemoved = {
+				...state.criteria[action.criteriaId],
+				groups: state.criteria[action.criteriaId].groups.filter((groupId) => groupId !== action.groupId)
+			}
+			const newCriteria = { qualId: state.selectedQual, type: OPTIONAL, groups: [ action.groupId ] }
+			const amendedCriterias = {
+				...state.criteria,
+				[action.criteriaId]: critGroupRemoved,
+				[nextObjKey(state.criteria)]: newCriteria
+			}
+			return { ...state, criteria: amendedCriterias }
 		default:
 			return state
 	}
