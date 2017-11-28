@@ -9,19 +9,19 @@ import { getQualificationGroups } from '../reducers/quals-reducer'
 const Container = (props) => <Units {...props} />
 
 const mapStateToProps = (state, ownProps) => ({
-	units: state.qualReducer.units,
-	groups: state.qualReducer.groups,
-	unitsGrouped: getAllGroupedUnits(state.qualReducer),
-	selectedQualGroups: getQualificationGroups(state)
+  units: state.qualReducer.units,
+  groups: state.qualReducer.groups,
+  unitsGrouped: getAllGroupedUnits(state.qualReducer),
+  selectedQualGroups: getQualificationGroups(state)
 })
 
 const mapDispatchToProps = (dispatch) =>
-	bindActionCreators(
-		{
-			...UnitActions
-		},
-		dispatch
-	)
+  bindActionCreators(
+    {
+      ...UnitActions
+    },
+    dispatch
+  )
 
 const UnitsContainer = connect(mapStateToProps, mapDispatchToProps)(Container)
 

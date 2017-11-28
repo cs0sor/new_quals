@@ -8,20 +8,20 @@ import { getCriteriaForQual } from '../reducers/quals-reducer'
 const Container = (props) => <Criteria {...props} />
 
 const mapStateToProps = (state, ownProps) => ({
-	availableQuals: state.qualReducer.availableQuals,
-	units: state.qualReducer.units,
-	selectedQual: state.qualReducer.selectedQual,
+  availableQuals: state.qualReducer.availableQuals,
+  units: state.qualReducer.units,
+  selectedQual: state.qualReducer.selectedQual,
   qualGroups: state.qualReducer.groups,
-	criteria: getCriteriaForQual(state.qualReducer),
+  criteria: getCriteriaForQual(state.qualReducer),
 })
 
 const mapDispatchToProps = (dispatch) =>
-	bindActionCreators(
-		{
-			...CriteriaActions
-		},
-		dispatch
-	)
+  bindActionCreators(
+    {
+      ...CriteriaActions
+    },
+    dispatch
+  )
 
 const CriteriaContainer = connect(mapStateToProps, mapDispatchToProps)(Container)
 

@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 import qualReducer from './quals-reducer'
 
 const rootReducer = combineReducers({
-	qualReducer
+  qualReducer
 })
 
 export default rootReducer
