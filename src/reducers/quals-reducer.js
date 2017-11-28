@@ -70,29 +70,32 @@ export var initialData = {
 		'4': {
 			qualId: '1',
 			units: [ '6', '8', '10' ]
-		}
-	},
-
-	completionCriteria: {
-		'1': {
-			qualId: '1',
-			criteria: [ '1', '2' ]
-		}
+		},
 	},
 
 	criteria: {
 		'1': {
+			qualId: '1',
 			groups: [ '1' ],
 			type: MANDITORY
 		},
 		'2': {
+			qualId: '1',
 			groups: [ '2', '3' ],
 			type: OPTIONAL,
 			criteria: CREDIT,
 			minimum: 10
 		},
 		'3': {
+			qualId: '1',
 			groups: [ '4' ],
+			type: OPTIONAL,
+			criteria: CREDIT,
+			minimum: 10
+		},
+		'4': {
+			qualId: '2',
+			groups: [ '2' ],
 			type: OPTIONAL,
 			criteria: CREDIT,
 			minimum: 10
@@ -135,15 +138,22 @@ export default (state = initialData, action) => {
 			}
 			return { ...state, groups: { ...state.groups, [action.selected.groupId]: deletedUnitGroup } }
 		case types.ADD_NEW_GROUP:
+			const newGroupKey = nextObjKey(state.groups)
+			const newCriteriaKey = nextObjKey(state.criteria)
 			return {
 				...state,
-				groups: { ...state.groups, [nextObjKey(state.groups)]: { qualId: state.selectedQual, units: [] } }
+				groups: { ...state.groups, [newGroupKey]: { qualId: state.selectedQual, units: [] } },
+				criteria: {...state.criteria, [newCriteriaKey]: {qualId: state.selectedQual, type: OPTIONAL, groups:[newGroupKey,]}}
 			}
+		case types.SPLIT_FROM_CRITERIA:
+			const critGroupRemoved = {...state.criteria[action.criteriaId], groups: state.criteria[action.criteriaId].groups.filter(groupId => groupId !== action.groupId)}
+			const newCriteria = {qualId: state.selectedQual, type: OPTIONAL, groups:[action.groupId]}
+			const amendedCriterias = {...state.criteria, [action.criteriaId]: critGroupRemoved, [nextObjKey(state.criteria)]: newCriteria}
+			return {...state, criteria: amendedCriterias}
 		default:
 			return state
 	}
 }
-
 
 // Given a teh state of selectedQualId, this iterates through groups generating a key value pair of unit:group
 export const getSelectedGroupedUnits = (state) => {
@@ -166,3 +176,9 @@ export const getQualificationGroups = (state) =>
 		...state.qualReducer.groups[groupId],
 		groupId
 	}))
+
+// Returns criteria for a particular Qual
+export const getCriteriaForQual = (state) =>
+	Object.keys(state.criteria)
+		.filter((index) => state.criteria[index].qualId === state.selectedQual)
+		.reduce((result, key) => ({ ...result, [key]: state.criteria[key] }), {})
