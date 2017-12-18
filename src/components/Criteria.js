@@ -3,15 +3,15 @@ import * as bs from 'react-bootstrap/lib/'
 import QualGroups from '../components/QualGroups'
 const CriteriaItem = (props) => {
   return <bs.Panel header={props.title}>
-    <QualGroups {...props} />
+    <QualGroups {...props}/>
     <br/>
     <bs.DropdownButton title="Minimum Score" id="bg-nested-dropdown">
-      <bs.MenuItem eventKey="1">1</bs.MenuItem>
-      <bs.MenuItem eventKey="2">2</bs.MenuItem>
+      <bs.MenuItem key={1} eventKey="1">1</bs.MenuItem>
+      <bs.MenuItem key={2} eventKey="2">2</bs.MenuItem>
     </bs.DropdownButton>
     <bs.DropdownButton title="Of Type" id="bg-nested-dropdown">
-      <bs.MenuItem eventKey="1">Credits</bs.MenuItem>
-      <bs.MenuItem eventKey="2">Units Completed</bs.MenuItem>
+      <bs.MenuItem key={1} eventKey="1">Credits</bs.MenuItem>
+      <bs.MenuItem key={2} eventKey="2">Units Completed</bs.MenuItem>
     </bs.DropdownButton>   
   </bs.Panel>}
 

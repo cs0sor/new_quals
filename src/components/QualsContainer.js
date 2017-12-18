@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import Qualifications from './Qualifications'
 import * as QualificationActions from '../actions/qualification-actions'
 import * as GroupActions from '../actions/group-actions'
+import * as UnitActions from '../actions/unit-actions'
 import { getQualificationGroups } from '../reducers/quals-reducer'
 const Container = (props) => <Qualifications {...props} />
 
@@ -19,7 +20,8 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
     {
       ...QualificationActions,
-      ...GroupActions
+      ...GroupActions,
+      ...UnitActions,
     },
     dispatch
   )

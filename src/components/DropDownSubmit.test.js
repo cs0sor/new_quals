@@ -9,11 +9,11 @@ import { addUnitToQualification } from '../actions/qualification-actions'
 Enzyme.configure({ adapter: new Adapter() })
 
 it('renders the Dropdown Submit component', () => {
-	const units = {
-		'1': 'Option 1',
-		'2': 'Option 2',
-		'3': 'Option 3'
-	}
+	const units = [
+		['1', 'Option 1'],
+		['2', 'Option 2'],
+		['3', 'Option 3']
+	]
 
 	const component = mount(<DropDownAdd options={units} />)
 
@@ -21,16 +21,16 @@ it('renders the Dropdown Submit component', () => {
 })
 
 it('selects an option', () => {
-	const units = {
-		'1': 'Option 1',
-		'2': 'Option 2',
-		'3': 'Option 3'
-	}
-
+	const units = [
+		['1', 'Option 1'],
+		['2', 'Option 2'],
+		['3', 'Option 3']
+	]
+	
 	const component = mount(<DropDownAdd options={units} />)
 
 	component.find('select').simulate('change', { target: { value: '3' } })
-	expect(component.state().selected).toEqual('3')
+	expect(component.state().selected).toEqual(3)
 })
 
 it('submits an option', () => {
@@ -40,11 +40,11 @@ it('submits an option', () => {
 		store.dispatch(addUnitToQualification(selected))
 	}
 
-	const units = {
-		'1': 'Option 1',
-		'2': 'Option 2',
-		'3': 'Option 3'
-	}
+	const units = [
+		['1', 'Option 1'],
+		['2', 'Option 2'],
+		['3', 'Option 3']
+	]
 
 	const component = mount(<DropDownAdd options={units} submitAction={handleSubmit} />)
 

@@ -160,6 +160,44 @@ export default (state = initialData, action) => {
         [nextObjKey(state.criteria)]: newCriteria
       }
       return { ...state, criteria: amendedCriterias }
+
+    case types.MERGE_GROUP:
+      const groupKey = action.payload.context.group
+      const currentCriteriaKey = action.payload.context.criteria
+      const mergeCritieraKey = action.payload.selected
+      const mergedCriteria = {
+        ...state.criteria[mergeCritieraKey],
+        groups: state.criteria[mergeCritieraKey].groups.concat(groupKey)
+      }
+      const criteria = {
+        ...Object.keys(state.criteria)
+          .filter((item) => item !== currentCriteriaKey)
+          .reduce((result, item) => ({ ...result, [item]: state.criteria[item] }), {}),
+        [mergeCritieraKey]: mergedCriteria
+      }
+      return { ...state, criteria }
+
+    case types.DELETE_GROUP:
+      const delGroupCrit = Object.keys(state.criteria).reduce(
+        (previous, item) => ({
+          ...previous,
+          [item]: {
+            ...state.criteria[item],
+            groups: state.criteria[item].groups.filter((item) => item !== action.groupId)
+          }
+        }),
+        {}
+      )
+
+      const delGroupCritRemoveEmpty = Object.keys(delGroupCrit).reduce(
+        (previous, item) =>
+          delGroupCrit[item].groups.length > 0 ? {...previous, [item]:delGroupCrit[item]}:{...previous}, {})
+      const delGroup = Object.keys(state.groups).reduce(
+        (previous, item) =>
+          item !== action.groupId ? { ...previous, [item]: { ...state.groups[item] } } : { ...previous },
+        {}
+      )
+      return { ...state, criteria: delGroupCritRemoveEmpty, groups: delGroup }
     default:
       return state
   }

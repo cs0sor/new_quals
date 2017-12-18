@@ -5,3 +5,10 @@ export const splitFromCriteria = (criteriaId, groupId) => ({
   criteriaId: criteriaId,
   groupId: groupId
 })
+
+export const mergeGroup = (payload) => {
+  return {
+    type: types.MERGE_GROUP,
+    payload: payload
+  }
+}

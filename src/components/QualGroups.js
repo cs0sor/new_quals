@@ -1,5 +1,6 @@
 import React from 'react'
 import * as bs from 'react-bootstrap/lib/'
+import DropDownSubmit from './DropDownSubmit'
 
 const headerData = [ '', 'Id', 'Title', '' ]
 
@@ -19,7 +20,7 @@ const Unit = (props) => {
       <td style={{ width: '100px' }}>{props.unit}</td>
       <td style={{ width: '350px' }}>{props.units[props.unit].name}</td>
       <td style={{ width: '50px' }}>
-        <bs.Button bsSize="xsmall">Remove</bs.Button>
+        <bs.Button className="remove-from-group" bsSize="xsmall" onClick={() => props.removeUnitFromGroup({unitId: props.unit, groupId: props.groupId})}>Remove</bs.Button>
       </td>
     </tr>
   )
@@ -33,18 +34,15 @@ const Body = (props) => {
   )
 }
 
+const mergeOptions = (props) => [[-1, 'Merge into...']].concat(Object.keys(props.criteria).filter(item => item !== props.criteriaId).map(item => [item, `criteria ${item}`]))
+
 const Group = (props) => {
-  console.log(props)
   const splitOrMergeGroups =
     props.criteriaGroup.groups.length > 1 ? (
-      <bs.Button onClick={() => props.splitFromCriteria(props.criteriaId, props.group.groupId)}>
+      <bs.Button className="split-from-criteria" onClick={() => props.splitFromCriteria(props.criteriaId, props.group.groupId)}>
         <span className="glyphicon glyphicon-resize-full" aria-hidden="true" /> Split from Criteria
-      </bs.Button>
-    ) : (
-      <bs.Button>
-        <span className="glyphicon glyphicon-resize-full" aria-hidden="true" /> Merge into Criteria
-      </bs.Button>
-    )
+      </bs.Button>) : 
+    <DropDownSubmit options={mergeOptions(props)} context={{group: props.group.groupId, criteria: props.criteriaId}} submitAction={props.mergeGroup} placeholder="Merge into ..."/>
   return (
     <div>
       <h5>{props.title}</h5>
@@ -52,9 +50,9 @@ const Group = (props) => {
         <Header headers={headerData} />
         <Body {...props} />
       </bs.Table>
-      <bs.ButtonGroup bsSize="small">
+      <bs.ButtonGroup bsSize="small" className='merge-groups'>
         {splitOrMergeGroups}
-        <bs.Button>
+        <bs.Button className="delete-group" onClick={() => props.deleteGroup(props.group.groupId)}>
           <span className="glyphicon glyphicon-remove-circle" aria-hidden="true" /> Delete
         </bs.Button>
       </bs.ButtonGroup>
@@ -69,7 +67,7 @@ const QualGroups = (props) =>
       group={{...props.qualGroups[group], groupId:group}}
       groupId={group}
       title={`Group ${group}`}
-      key={props.qualGroups[group].groupId}
+      key={group}
     />
   ))
 
