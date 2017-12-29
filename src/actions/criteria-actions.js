@@ -6,9 +6,17 @@ export const splitFromCriteria = (criteriaId, groupId) => ({
   groupId: groupId
 })
 
-export const mergeGroup = (payload) => {
-  return {
+export const mergeGroup = (payload) => ({
     type: types.MERGE_GROUP,
     payload: payload
-  }
-}
+})
+
+export const updateMinScore = (payload) => ({
+    type: types.UPDATE_MIN_SCORE,
+    payload: payload
+})
+
+export const changeScoreCriteria = (payload) => ({
+    type: types.CHANGE_SCORE_CRITERIA,
+    payload: payload
+})

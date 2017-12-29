@@ -1,18 +1,56 @@
 import React from 'react'
 import * as bs from 'react-bootstrap/lib/'
 import QualGroups from '../components/QualGroups'
+import {COMPLETE_ON_CREDITS, COMPLETE_ON_UNITS, OPTIONAL} from '../reducers/quals-reducer'
+
+export function creditsTotal(criteria, qualGroups, units) {
+  console.log('got here as well')
+  return criteria.groups.reduce(
+    (previous, item) => previous + qualGroups[item].units.reduce(
+      (previous, item) => previous + parseInt(units[item].credits, 10), 0), 0)
+}
+
+export function unitsTotal(criteria, qualGroups, units) {
+  console.log('got here')
+  return criteria.groups.reduce(
+    (previous, item) => previous + qualGroups[item].units.length
+  , 0)
+}
+
 const CriteriaItem = (props) => {
+
+  const criteria = props.criteria[props.criteriaId]
+  const total = criteria.criteria === COMPLETE_ON_CREDITS ? 
+    creditsTotal(criteria, props.qualGroups, props.units)
+    :
+    unitsTotal(criteria, props.qualGroups, props.units)
+  
+  const completeOptions = criteria.type === OPTIONAL
+    ? <div>
+      <bs.FormControl
+        componentClass="select"
+        className="score-criteria"
+        value={criteria.criteria}
+        onChange={(e) => props.changeScoreCriteria({value: e.target.value, criteria: props.criteriaId})}>
+        <option key={1} value={COMPLETE_ON_CREDITS}>Credits</option>
+        <option key={2} value={COMPLETE_ON_UNITS}>Units Completed</option>
+      </bs.FormControl>
+      <bs.FormControl
+        title="Minimum Score"
+        className="cert-type"
+        componentClass="select"
+        value={criteria.minimumScore}
+        onChange={(e) => props.updateMinScore({value: e.target.value, criteria: props.criteriaId})}>
+        <option key={0} value={0}>0</option>
+        {[...Array(total).keys()].map(item => <option key={item + 1} value={item + 1}>{item + 1}</option>)}
+      </bs.FormControl>
+    </div>
+    : null
+  
+
   return <bs.Panel header={props.title}>
     <QualGroups {...props}/>
-    <br/>
-    <bs.DropdownButton title="Minimum Score" id="bg-nested-dropdown">
-      <bs.MenuItem key={1} eventKey="1">1</bs.MenuItem>
-      <bs.MenuItem key={2} eventKey="2">2</bs.MenuItem>
-    </bs.DropdownButton>
-    <bs.DropdownButton title="Of Type" id="bg-nested-dropdown">
-      <bs.MenuItem key={1} eventKey="1">Credits</bs.MenuItem>
-      <bs.MenuItem key={2} eventKey="2">Units Completed</bs.MenuItem>
-    </bs.DropdownButton>   
+    {completeOptions} 
   </bs.Panel>}
 
 

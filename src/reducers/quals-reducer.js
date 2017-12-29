@@ -1,9 +1,11 @@
 import * as types from '../actions/action-types'
 import warning from 'warning'
 
-const MANDITORY = 'MANDITORY'
-const OPTIONAL = 'OPTIONAL'
-const CREDIT = 'CREDIT'
+export const MANDITORY = 'MANDITORY'
+export const OPTIONAL = 'OPTIONAL'
+
+export const COMPLETE_ON_CREDITS = 'COMPLETE_ON_CREDITS'
+export const COMPLETE_ON_UNITS = 'COMPLETE_ON_UNITS'
 
 // Given an Objects whose 'keys' are integers return a unique key
 const nextObjKey = (obj) => parseInt(Object.keys(obj).sort().reverse()[0], 10) + 1
@@ -42,16 +44,16 @@ export var initialData = {
   selectedQual: '1',
   selectedGroup: '10',
   units: {
-    '1': { name: 'Unit 1' },
-    '2': { name: 'Unit 2' },
-    '3': { name: 'Unit 3' },
-    '4': { name: 'Unit 4' },
-    '5': { name: 'Unit 5' },
-    '6': { name: 'Unit 6' },
-    '7': { name: 'Unit 7' },
-    '8': { name: 'Unit 8' },
-    '9': { name: 'Unit 9' },
-    '10': { name: 'Unit 10' }
+    '1': { name: 'Unit 1', credits: 2 },
+    '2': { name: 'Unit 2', credits: 3 },
+    '3': { name: 'Unit 3', credits: 1 },
+    '4': { name: 'Unit 4', credits: 2 },
+    '5': { name: 'Unit 5', credits: 2 },
+    '6': { name: 'Unit 6', credits: 1 },
+    '7': { name: 'Unit 7', credits: 1 },
+    '8': { name: 'Unit 8', credits: 3 },
+    '9': { name: 'Unit 9', credits: 2 },
+    '10': { name: 'Unit 10', credits: 1 },
   },
 
   groups: {
@@ -77,28 +79,30 @@ export var initialData = {
     '1': {
       qualId: '1',
       groups: [ '1' ],
-      type: MANDITORY
+      type: MANDITORY,
+      criteria: null,
+      minimumScore: null,
     },
     '2': {
       qualId: '1',
       groups: [ '2', '3' ],
       type: OPTIONAL,
-      criteria: CREDIT,
-      minimum: 10
+      criteria: COMPLETE_ON_CREDITS,
+      minimumScore: 0
     },
     '3': {
       qualId: '1',
       groups: [ '4' ],
       type: OPTIONAL,
-      criteria: CREDIT,
-      minimum: 10
+      criteria: COMPLETE_ON_UNITS,
+      minimumScore: 0
     },
     '4': {
       qualId: '2',
       groups: [ '2' ],
       type: OPTIONAL,
-      criteria: CREDIT,
-      minimum: 10
+      criteria: COMPLETE_ON_CREDITS,
+      minimumScore: 0
     }
   }
 }
@@ -176,6 +180,23 @@ export default (state = initialData, action) => {
         [mergeCritieraKey]: mergedCriteria
       }
       return { ...state, criteria }
+
+    case types.CHANGE_SCORE_CRITERIA:
+      return {
+        ...state,
+        criteria: {...state.criteria, [action.payload.criteria]: {...state.criteria[action.payload.criteria],
+          criteria: action.payload.value,
+          minimumScore: 0}
+      }}
+
+    case types.UPDATE_MIN_SCORE:
+      return {
+        ...state,
+        criteria: {
+          ...state.criteria,
+          [action.payload.criteria]: {...state.criteria[action.payload.criteria],
+            minimumScore: parseInt(action.payload.value, 10)}}
+        }
 
     case types.DELETE_GROUP:
       const delGroupCrit = Object.keys(state.criteria).reduce(

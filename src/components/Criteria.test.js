@@ -4,9 +4,34 @@ import Adapter from 'enzyme-adapter-react-16'
 import { mount } from 'enzyme'
 import configureStore from '../store/configure-store'
 import CriteriaContainer from '../components/CriteriaContainer'
-
+import { creditsTotal, unitsTotal } from '../components/Criteria'
 Enzyme.configure({ adapter: new Adapter() })
 
+const data = {
+  units: {
+    '1': { name: 'Unit 1', credits: 2 },
+    '2': { name: 'Unit 2', credits: 3 },
+    '3': { name: 'Unit 3', credits: 1 },
+    '4': { name: 'Unit 4', credits: 2 },
+  },
+  criteria: {
+    qualId: '1',
+    groups: [ '1', '2' ],
+    type: 'OPTIONAL',
+    criteria: 'COMPLETE_ON_CREDITS',
+    minimumScore: 0  
+  },
+  groups: {
+    '1': {
+      qualId: '1',
+      units: [ '1', '2' ]
+    },
+    '2': {
+      qualId: '1',
+      units: [ '3', '4' ]
+    },
+  },
+}
 
 it('renders the container without crashing', () => {
   const store = configureStore()
@@ -41,10 +66,43 @@ it('splits a group into new criteria', () => {
   expect(Object.keys(store.getState().qualReducer.criteria).length).toEqual(5)
 })
 
-
 it('removes a unit from a group in criteria panel', () => {
   const store = configureStore()
   const component = mount(<CriteriaContainer store={store} />)
   const deleteGroup = component.find('.remove-from-group').first()
   deleteGroup.simulate('click')
+})
+
+it ('changes criteria score type', () => {
+  const store = configureStore()
+  const component = mount(<CriteriaContainer store={store} />)
+  const deleteGroup = component.find('.remove-from-group').first()
+  deleteGroup.simulate('click')
+})
+
+it('Calculates total credits for a criteria group', () => {
+  expect(creditsTotal(data.criteria, data.groups, data.units)).toEqual(8) 
+
+})
+
+it('Calculates units units for a criteria group', () => {
+  expect(unitsTotal(data.criteria, data.groups, data.units)).toEqual(4) 
+})
+
+it('selects credits on score criteria', () => {
+  const store = configureStore()
+  const component = mount(<CriteriaContainer store={store} />)
+  component.find('.score-criteria').first().simulate('change', { target: { value: 'COMPLETE_ON_CREDITS' } })
+})
+
+it('selects units on score criteria', () => {
+  const store = configureStore()
+  const component = mount(<CriteriaContainer store={store} />)
+  component.find('.score-criteria').first().simulate('change', { target: { value: 'COMPLETE_ON_UNITS' } })
+})
+
+it('updates score criteria', () => {
+  const store = configureStore()
+  const component = mount(<CriteriaContainer store={store} />)
+  component.find('.cert-type').first().simulate('change', { target: { value: '2' } })
 })
