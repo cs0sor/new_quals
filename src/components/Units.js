@@ -1,13 +1,21 @@
 import React from 'react'
-import * as Bootstrap from 'react-bootstrap/lib/'
-
+import * as bs from 'react-bootstrap/lib/'
+import DebounceInput from 'react-debounce-input';
 const headerData = [ 'Id', 'Title', '' ]
 
 const Units = (props) => (
-  <Bootstrap.Table striped bordered condensed hover>
+  <div>
+  <DebounceInput
+    style={{ width: 400 }}
+    minLength={2}
+    debounceTimeout={200}
+    onChange={ event => props.searchUnits(event.target.value)} />
+
+  <bs.Table striped bordered condensed hover>
     <Header headers={headerData} />
     <Body {...props} />
-  </Bootstrap.Table>
+  </bs.Table>
+  </div>
 )
 
 const Header = (props) => (
@@ -16,32 +24,32 @@ const Header = (props) => (
   </thead>
 )
 
-const Body = (props) => (
-  <tbody>{Object.entries(props.unitsGrouped).map((unit) => <Unit {...props} unit={unit} key={unit[0]} />)}</tbody>
-)
+const Body = (props) => {
+  return <tbody>{Object.entries(props.unitsGrouped).map((unit) => <Unit {...props} unit={unit} key={unit[0]} />)}</tbody>
+}
 
 const Button = (props) =>
   props.unit[1] ? (
-    <Bootstrap.Button id={`remove-group-${props.unit[0]}`} onClick={(e) => props.removeUnitFromGroup({ groupId: props.unit[1], unitId: props.unit[0] })}>
+    <bs.Button id={`remove-group-${props.unit[0]}`} onClick={(e) => props.removeUnitFromGroup({ groupId: props.unit[1], unitId: props.unit[0] })}>
       Remove From Group {props.unit[1]}
-    </Bootstrap.Button>
+    </bs.Button>
   ) : (
     <GroupSelectButton {...props} />
   )
 
 const GroupSelectButton = (props) => (
-  <Bootstrap.DropdownButton
+  <bs.DropdownButton
     title="Add Unit"
     key={props.unit[1]}
     id={`split-button-basic-Danger-${props.unit[0]}`}
     onSelect={(groupId) => props.addUnitToGroup({ unitId: props.unit[0], groupId: groupId })}
   >
     {props.selectedQualGroups.map((group) => (
-      <Bootstrap.MenuItem id={`add-group-menu-item-${props.unit[0]}-${group.groupId}`} eventKey={group.groupId} key={group.groupId}>
+      <bs.MenuItem id={`add-group-menu-item-${props.unit[0]}-${group.groupId}`} eventKey={group.groupId} key={group.groupId}>
         to Group {group.groupId}
-      </Bootstrap.MenuItem>
+      </bs.MenuItem>
     ))}
-  </Bootstrap.DropdownButton>
+  </bs.DropdownButton>
 )
 
 const Unit = (props) => (

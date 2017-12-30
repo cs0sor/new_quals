@@ -5,6 +5,8 @@ import { mount } from 'enzyme'
 import configureStore from '../store/configure-store'
 import CriteriaContainer from '../components/CriteriaContainer'
 import { creditsTotal, unitsTotal } from '../components/Criteria'
+import testData from '../test-data'
+
 Enzyme.configure({ adapter: new Adapter() })
 
 const data = {
@@ -34,13 +36,13 @@ const data = {
 }
 
 it('renders the container without crashing', () => {
-  const store = configureStore()
+  const store = configureStore(testData)
   const container = mount(<CriteriaContainer store={store}/>)
   container.find('CriteriaItem').first()
 })
 
 it('merges a group into another criteria', () => {
-  const store = configureStore()
+  const store = configureStore(testData)
   const container = mount(<CriteriaContainer store={store}/>)
   const component = container.find('FormControl > select').first()
   component.simulate('change', { target: { value: '3' } })
@@ -50,7 +52,7 @@ it('merges a group into another criteria', () => {
 })
 
 it('removes a group from a criteria', () => {
-	const store = configureStore()
+	const store = configureStore(testData)
   const component = mount(<CriteriaContainer store={store} />)
   const deleteGroup = component.find('QualGroups > Group > div > ButtonGroup > div > Button').first()
   deleteGroup.simulate('click')
@@ -59,7 +61,7 @@ it('removes a group from a criteria', () => {
 })
 
 it('splits a group into new criteria', () => {
-  const store = configureStore()
+  const store = configureStore(testData)
   const component = mount(<CriteriaContainer store={store} />)
   const deleteGroup = component.find('.split-from-criteria').first()
   deleteGroup.simulate('click')
@@ -67,14 +69,14 @@ it('splits a group into new criteria', () => {
 })
 
 it('removes a unit from a group in criteria panel', () => {
-  const store = configureStore()
+  const store = configureStore(testData)
   const component = mount(<CriteriaContainer store={store} />)
   const deleteGroup = component.find('.remove-from-group').first()
   deleteGroup.simulate('click')
 })
 
 it ('changes criteria score type', () => {
-  const store = configureStore()
+  const store = configureStore(testData)
   const component = mount(<CriteriaContainer store={store} />)
   const deleteGroup = component.find('.remove-from-group').first()
   deleteGroup.simulate('click')
@@ -90,19 +92,19 @@ it('Calculates units units for a criteria group', () => {
 })
 
 it('selects credits on score criteria', () => {
-  const store = configureStore()
+  const store = configureStore(testData)
   const component = mount(<CriteriaContainer store={store} />)
   component.find('.score-criteria').first().simulate('change', { target: { value: 'COMPLETE_ON_CREDITS' } })
 })
 
 it('selects units on score criteria', () => {
-  const store = configureStore()
+  const store = configureStore(testData)
   const component = mount(<CriteriaContainer store={store} />)
   component.find('.score-criteria').first().simulate('change', { target: { value: 'COMPLETE_ON_UNITS' } })
 })
 
 it('updates score criteria', () => {
-  const store = configureStore()
+  const store = configureStore(testData)
   const component = mount(<CriteriaContainer store={store} />)
   component.find('.cert-type').first().simulate('change', { target: { value: '2' } })
 })

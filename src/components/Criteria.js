@@ -4,14 +4,12 @@ import QualGroups from '../components/QualGroups'
 import {COMPLETE_ON_CREDITS, COMPLETE_ON_UNITS, OPTIONAL} from '../reducers/quals-reducer'
 
 export function creditsTotal(criteria, qualGroups, units) {
-  console.log('got here as well')
   return criteria.groups.reduce(
     (previous, item) => previous + qualGroups[item].units.reduce(
       (previous, item) => previous + parseInt(units[item].credits, 10), 0), 0)
 }
 
 export function unitsTotal(criteria, qualGroups, units) {
-  console.log('got here')
   return criteria.groups.reduce(
     (previous, item) => previous + qualGroups[item].units.length
   , 0)

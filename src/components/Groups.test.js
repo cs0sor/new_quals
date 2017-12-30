@@ -6,12 +6,11 @@ import configureStore from '../store/configure-store'
 import { AddNewGroup } from '../components/Qualifications'
 import * as Actions from '../actions/group-actions'
 import UnitsContainer from '../components/UnitsContainer'
-import CriteriaContainer from '../components/CriteriaContainer'
-import * as bs from 'react-bootstrap/lib/'
+import testData from '../test-data'
 Enzyme.configure({ adapter: new Adapter() })
 
 it('adds a new group', () => {
-	const store = configureStore()
+	const store = configureStore(testData)
 
 	const addNewGroup = () => {
 		store.dispatch(Actions.addNewGroup())
@@ -24,7 +23,7 @@ it('adds a new group', () => {
 })
 
 it('removes a unit from a group', () => {
-	const store = configureStore()
+	const store = configureStore(testData)
 	const component = mount(<UnitsContainer store={store} />)
 	const button = component.find('button').at(0)
 	button.simulate('click')
@@ -32,7 +31,7 @@ it('removes a unit from a group', () => {
 })
 
 it('adds a unit to a group', () => {
-	const store = configureStore()
+	const store = configureStore(testData)
 	const component = mount(<UnitsContainer store={store} />)
 	const menuItem = component.find('DropdownMenu SafeAnchor > a').first()
 	menuItem.simulate('click')

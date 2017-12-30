@@ -9,3 +9,8 @@ export const removeUnitFromGroup = (selected) => ({
   type: types.REMOVE_UNIT_FROM_GROUP,
   selected
 })
+
+export const searchUnits = (term) => ({
+  type: types.SEARCH_UNITS,
+  term
+})
