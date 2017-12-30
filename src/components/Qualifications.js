@@ -1,7 +1,7 @@
 import React from 'react'
 // import InputSubmit from './InputSubmit'
 // import DropDownSubmit from './DropDownSubmit'
-import CriiteriaContainer from '../components/CriteriaContainer'
+import CriteriaContainer from '../components/CriteriaContainer'
 import UnitsContainer from './UnitsContainer'
 import * as Bootstrap from 'react-bootstrap/lib/'
 
@@ -24,7 +24,7 @@ export default class Qualifications extends React.Component {
         <AddNewGroup {...this.props} />
       </Bootstrap.Col>
       <Bootstrap.Col md={6}>
-        <CriiteriaContainer {...this.props}/>
+        <CriteriaContainer {...this.props}/>
       </Bootstrap.Col>
     </Bootstrap.Grid>
     :
