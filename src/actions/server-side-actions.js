@@ -34,18 +34,22 @@ export function getQualification(qualId) {
       groups: {
         '1': {
           qualId: '1',
+          title: 'First Group Title',
           units: [ '3', '1' ]
         },
         '2': {
           qualId: '1',
+          title: 'Another Group Title',
           units: [ '7', '5' ]
         },
         '3': {
           qualId: '1',
+          title: 'Third Group Title',
           units: [ '9' ]
         },
         '4': {
           qualId: '1',
+          title: 'Fourth Group Title',
           units: [ '6', '8', '10' ]
         }
       },
