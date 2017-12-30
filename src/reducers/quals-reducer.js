@@ -8,7 +8,7 @@ export const COMPLETE_ON_CREDITS = 'COMPLETE_ON_CREDITS'
 export const COMPLETE_ON_UNITS = 'COMPLETE_ON_UNITS'
 
 // Given an Objects whose 'keys' are integers return a unique key
-const nextObjKey = (obj) => parseInt(Object.keys(obj).sort().reverse()[0], 10) + 1
+const nextObjKey = (obj) => Object.keys(obj).length > 0 ? parseInt(Object.keys(obj).sort().reverse()[0], 10) + 1 : 1
 
 // Given a Qualification id, return groups that belong to the Qualification
 const getQualGroups = (qualId, allGroups) =>
@@ -35,14 +35,6 @@ export const addUnitToGroup = (unit, selectedGroup, selectedQual, allGroups) => 
       ),
       allGroups)
 }
-
-// const fuzzySearch = (state) => 
-//   new FuzzySearch(
-//     Object.keys(state.units).map(key => ({...state.units[key], key})),
-//     ['name'], {
-//     caseSensitive: false,
-//     sort: true,
-//   })
 
 export var initialData = {
   availableQuals: {

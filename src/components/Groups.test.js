@@ -22,6 +22,19 @@ it('adds a new group', () => {
 	expect(Object.keys(store.getState().qualReducer.groups.length === 5))
 })
 
+it('adds an initial group', () => {
+
+	const store = configureStore({qualReducer:{...testData.qualReducer, groups:{}}})
+	const addNewGroup = () => {
+		store.dispatch(Actions.addNewGroup())
+	}
+
+	const component = mount(<AddNewGroup addNewGroup={addNewGroup} />)
+	const button = component.find('button')
+	button.simulate('click')
+	expect(Object.keys(store.getState().qualReducer.groups)).toEqual(['1'])
+})
+
 it('removes a unit from a group', () => {
 	const store = configureStore(testData)
 	const component = mount(<UnitsContainer store={store} />)
