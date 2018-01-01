@@ -11,10 +11,10 @@ Enzyme.configure({ adapter: new Adapter() })
 
 const data = {
   units: {
-    '1': { name: 'Unit 1', credits: 2 },
-    '2': { name: 'Unit 2', credits: 3 },
-    '3': { name: 'Unit 3', credits: 1 },
-    '4': { name: 'Unit 4', credits: 2 },
+    '1': { name: 'Unit 1', credit: 2 },
+    '2': { name: 'Unit 2', credit: 3 },
+    '3': { name: 'Unit 3', credit: 1 },
+    '4': { name: 'Unit 4', credit: 2 },
   },
   criteria: {
     qualId: '1',
@@ -84,10 +84,9 @@ it ('changes criteria score type', () => {
 
 it('Calculates total credits for a criteria group', () => {
   expect(creditsTotal(data.criteria, data.groups, data.units)).toEqual(8) 
-
 })
 
-it('Calculates units units for a criteria group', () => {
+it('Calculates units for a criteria group', () => {
   expect(unitsTotal(data.criteria, data.groups, data.units)).toEqual(4) 
 })
 

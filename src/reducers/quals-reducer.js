@@ -43,6 +43,7 @@ export var initialData = {
   selectedQual: null,
   selectedGroup: null,
   searchResults: [],
+  savable: false,
   units: {},
   groups: {},
   criteria: {}
@@ -50,22 +51,35 @@ export var initialData = {
 
 export default (state = initialData, action) => {
   switch (action.type) {
+    case types.QUALIFICATION_SAVED:
+      return {...state, savable: false}
+    case types.UPDATE_QUALIFICATION_TITLE:
+      return {
+        ...state,
+        availableQuals: {
+          ...state.availableQuals,
+          [state.selectedQual]: {
+            ...state.availableQuals[state.selectedQual],
+            title: action.value}
+        }}
     case types.SET_QUALIFICATION_STATE:
       return action.payload
     case types.ADD_QUALIFICATION:
       let nextID = nextObjKey(state.availableQuals)
       return {
         ...state,
+        savable: false,
         availableQuals: {
           ...state.availableQuals,
           [nextID]: action.title
         },
-        selectedQual: nextID
+        selectedQual: nextID,
       }
     case types.ADD_UNIT_TO_QUALIFICATION:
       const newGroups = addUnitToGroup(action.selected, state.selectedGroup, state.selectedQual, state.groups)
       return {
         ...state,
+        savable: true,
         groups: newGroups
       }
     case types.ADD_UNIT_TO_GROUP:
@@ -73,26 +87,29 @@ export default (state = initialData, action) => {
         ...state.groups[action.selected.groupId],
         units: state.groups[action.selected.groupId].units.concat(action.selected.unitId)
       }
-
-      return { ...state, groups: { ...state.groups, [action.selected.groupId]: updatedGroup } }
-
+      return { ...state, savable: true, groups: { ...state.groups, [action.selected.groupId]: updatedGroup } }
+    case types.UPDATE_GROUP_TITLE:
+      return {...state, savable: true, groups: {...state.groups, [action.groupId]: {...state.groups[action.groupId], title: action.value}}}
     case types.REMOVE_UNIT_FROM_GROUP:
       const deletedUnitGroup = {
         ...state.groups[action.selected.groupId],
+        savable: true,
         units: [
           ...state.groups[action.selected.groupId].units.filter((unit) => unit !== action.selected.unitId)
         ]
       }
       return { ...state, groups: { ...state.groups, [action.selected.groupId]: deletedUnitGroup } }
+
     case types.ADD_NEW_GROUP:
       const newGroupKey = nextObjKey(state.groups)
       const newCriteriaKey = nextObjKey(state.criteria)
       return {
         ...state,
-        groups: { ...state.groups, [newGroupKey]: { qualId: state.selectedQual, units: [] } },
+        savable: true,
+        groups: { ...state.groups, [newGroupKey]: { qualId: state.selectedQual, units: [], title: `Group ${newGroupKey} title...`,  } },
         criteria: {
           ...state.criteria,
-          [newCriteriaKey]: { qualId: state.selectedQual, type: OPTIONAL, groups: [ newGroupKey ] }
+          [newCriteriaKey]: { qualId: state.selectedQual, type: OPTIONAL, criteria: COMPLETE_ON_CREDITS, minimumScore: 0, groups: [ newGroupKey ] }
         }
       }
 
@@ -107,7 +124,7 @@ export default (state = initialData, action) => {
         [action.criteriaId]: critGroupRemoved,
         [nextObjKey(state.criteria)]: newCriteria
       }
-      return { ...state, criteria: amendedCriterias }
+      return { ...state, savable: true, criteria: amendedCriterias }
 
     case types.SEARCH_UNITS:
       const fs = FuzzySearch
@@ -129,19 +146,31 @@ export default (state = initialData, action) => {
           .reduce((result, item) => ({ ...result, [item]: state.criteria[item] }), {}),
         [mergeCritieraKey]: mergedCriteria
       }
-      return { ...state, criteria }
+      return { ...state, criteria, savable: true }
 
     case types.CHANGE_SCORE_CRITERIA:
       return {
         ...state,
+        savable: true,
         criteria: {...state.criteria, [action.payload.criteria]: {...state.criteria[action.payload.criteria],
           criteria: action.payload.value,
           minimumScore: 0}
       }}
 
+    case types.SET_CRITERIA_TYPE:
+      return {
+        ...state,
+        savable: true,
+        criteria: {
+          ...state.criteria,
+          [action.criteria]: {...state.criteria[action.criteria],
+          type: action.criteriaType}
+      }}
+
     case types.UPDATE_MIN_SCORE:
       return {
         ...state,
+        savable: true,
         criteria: {
           ...state.criteria,
           [action.payload.criteria]: {...state.criteria[action.payload.criteria],
@@ -168,7 +197,7 @@ export default (state = initialData, action) => {
           item !== action.groupId ? { ...previous, [item]: { ...state.groups[item] } } : { ...previous },
         {}
       )
-      return { ...state, criteria: delGroupCritRemoveEmpty, groups: delGroup }
+      return { ...state, savable: true, criteria: delGroupCritRemoveEmpty, groups: delGroup }
     default:
       return state
   }

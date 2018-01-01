@@ -20,3 +20,9 @@ export const changeScoreCriteria = (payload) => ({
     type: types.CHANGE_SCORE_CRITERIA,
     payload: payload
 })
+
+export const setCriteriaType = (payload) => ({
+    type: types.SET_CRITERIA_TYPE,
+    criteria: payload.criteria,
+    criteriaType: payload.type
+})

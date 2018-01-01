@@ -1,7 +1,7 @@
 import React from 'react'
 import * as bs from 'react-bootstrap/lib/'
 import DropDownSubmit from './DropDownSubmit'
-
+import DebounceInput from 'react-debounce-input';
 const headerData = [ '', 'Id', 'Title', '' ]
 
 const Header = (props) => (
@@ -45,7 +45,14 @@ const Group = (props) => {
     <DropDownSubmit options={mergeOptions(props)} context={{group: props.group.groupId, criteria: props.criteriaId}} submitAction={props.mergeGroup} placeholder="Merge into ..."/>
   return (
     <div>
-      <h5>{props.title}</h5>
+      <h5>{props.titleId}</h5>
+      <DebounceInput
+        style={{ width: 400 }}
+        minLength={2}
+        debounceTimeout={100}
+        value={props.group.title}
+        onChange={ e => props.updateGroupTitle({value: e.target.value, groupId: props.group.groupId})} />
+
       <bs.Table striped bordered condensed hover>
         <Header headers={headerData} />
         <Body {...props} />
@@ -66,7 +73,7 @@ const QualGroups = (props) =>
       {...props}
       group={{...props.qualGroups[group], groupId:group}}
       groupId={group}
-      title={`Group ${group}`}
+      titleId={`Group ${group}`}
       key={group}
     />
   ))

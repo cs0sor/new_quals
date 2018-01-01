@@ -2,9 +2,9 @@ import FuzzySearch from 'fuzzy-search';
 
 const fuzzySearch = {
   searcher: null,
-  init(state) {
+  init(units) {
     this.searcher = new FuzzySearch(
-      Object.keys(state.units).map(key => ({...state.units[key], key})),
+      Object.keys(units).map(key => ({...units[key], key})),
       ['name'], {
       caseSensitive: false,
       sort: true,

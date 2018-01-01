@@ -6,7 +6,7 @@ import {COMPLETE_ON_CREDITS, COMPLETE_ON_UNITS, OPTIONAL} from '../reducers/qual
 export function creditsTotal(criteria, qualGroups, units) {
   return criteria.groups.reduce(
     (previous, item) => previous + qualGroups[item].units.reduce(
-      (previous, item) => previous + parseInt(units[item].credits, 10), 0), 0)
+      (previous, item) => previous + parseInt(units[item].credit, 10), 0), 0)
 }
 
 export function unitsTotal(criteria, qualGroups, units) {
@@ -22,7 +22,7 @@ const CriteriaItem = (props) => {
     creditsTotal(criteria, props.qualGroups, props.units)
     :
     unitsTotal(criteria, props.qualGroups, props.units)
-  
+
   const completeOptions = criteria.type === OPTIONAL
     ? <div>
       <bs.FormControl
@@ -48,6 +48,23 @@ const CriteriaItem = (props) => {
 
   return <bs.Panel header={props.title}>
     <QualGroups {...props}/>
+    <bs.FormGroup>
+      <bs.Radio
+        name="optionsGroup"
+        checked={criteria.type === 'MANDITORY'}
+        onChange={ e => props.setCriteriaType({criteria: props.criteriaId, type:'MANDITORY'})}
+        inline>
+        Manditory
+      </bs.Radio >
+      {' '}
+      <bs.Radio
+        name="optionsGroup"
+        checked={criteria.type === 'OPTIONAL'}
+        onChange={ e => props.setCriteriaType({criteria: props.criteriaId, type:'OPTIONAL'})}
+        inline>
+        Optional
+      </bs.Radio>
+      </bs.FormGroup>
     {completeOptions} 
   </bs.Panel>}
 

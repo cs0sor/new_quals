@@ -1,23 +1,23 @@
 const initialData = {
   qualReducer: {
     availableQuals: {
-      '1': 'A Qual',
-      '2': 'Another Qual'
+      '1': {title: 'A Qual', id: 1},
+      '2': {title: 'Another Qual', id: 2},
     },
     selectedQual: '1',
     selectedGroup: '10',
     searchResults: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
     units: {
-      '1': { name: 'Unit 1', credits: 2, visible: true},
-      '2': { name: 'Unit 2', credits: 3, visible: true},
-      '3': { name: 'Unit 3', credits: 1, visible: true },
-      '4': { name: 'Unit 4', credits: 2, visible: true },
-      '5': { name: 'Unit 5', credits: 2, visible: true },
-      '6': { name: 'Unit 6', credits: 1, visible: true },
-      '7': { name: 'Unit 7', credits: 1, visible: true },
-      '8': { name: 'Unit 8', credits: 3, visible: true },
-      '9': { name: 'Unit 9', credits: 2, visible: true },
-      '10': { name: 'Unit 10', credits: 1, visible: true },
+      '1': { name: 'Unit 1', credit: 2, visible: true},
+      '2': { name: 'Unit 2', credit: 3, visible: true},
+      '3': { name: 'Unit 3', credit: 1, visible: true },
+      '4': { name: 'Unit 4', credit: 2, visible: true },
+      '5': { name: 'Unit 5', credit: 2, visible: true },
+      '6': { name: 'Unit 6', credit: 1, visible: true },
+      '7': { name: 'Unit 7', credit: 1, visible: true },
+      '8': { name: 'Unit 8', credit: 3, visible: true },
+      '9': { name: 'Unit 9', credit: 2, visible: true },
+      '10': { name: 'Unit 10', credit: 1, visible: true },
     },
 
     groups: {

@@ -8,3 +8,9 @@ export const deleteGroup = (groupId) => ({
   type: types.DELETE_GROUP,
   groupId: groupId,
 })
+
+export const updateGroupTitle = (payload) => ({
+  type: types.UPDATE_GROUP_TITLE,
+  value: payload.value,
+  groupId: payload.groupId
+})

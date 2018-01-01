@@ -12,7 +12,7 @@ Enzyme.configure({ adapter: new Adapter() })
 it('performs a search on units', () => {
   const store = configureStore(testData)
   const fs = FuzzySearch
-  fs.init(testData.qualReducer)
+  fs.init(testData.qualReducer.units)
   const component = mount(<UnitsContainer store={store} />)
   const units = component.find('Units')
   store.dispatch(units.props().searchUnits('Unit 1'))

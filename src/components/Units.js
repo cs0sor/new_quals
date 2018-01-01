@@ -3,17 +3,23 @@ import * as bs from 'react-bootstrap/lib/'
 import DebounceInput from 'react-debounce-input';
 const headerData = [ 'Id', 'Title', '' ]
 
+const tableContainer = {
+  display:'block',
+  height:'500px',
+  overflow:'auto'
+};
+
 const Units = (props) => (
   <div>
   <DebounceInput
     style={{ width: 400 }}
     minLength={2}
-    debounceTimeout={200}
+    debounceTimeout={100}
     onChange={ event => props.searchUnits(event.target.value)} />
 
   <bs.Table striped bordered condensed hover>
     <Header headers={headerData} />
-    <Body {...props} />
+    <Body  {...props} />
   </bs.Table>
   </div>
 )
@@ -25,7 +31,7 @@ const Header = (props) => (
 )
 
 const Body = (props) => {
-  return <tbody>{Object.entries(props.unitsGrouped).map((unit) => <Unit {...props} unit={unit} key={unit[0]} />)}</tbody>
+  return <tbody style={tableContainer}>{Object.entries(props.unitsGrouped).map((unit) => <Unit {...props} unit={unit} key={unit[0]} />)}</tbody>
 }
 
 const Button = (props) =>
