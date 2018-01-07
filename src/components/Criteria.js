@@ -66,8 +66,6 @@ const CriteriaItem = (props) => {
 
   const completeOptions = criteria.type === OPTIONAL
     ? <div>
-      <CriteriaDescription {...props}/>
-      <br/>
       <h5>Completion Criteria:</h5>
       <bs.FormControl
         componentClass="select"
@@ -110,6 +108,8 @@ const CriteriaItem = (props) => {
         Optional
       </bs.Radio>
       </bs.FormGroup>
+      <CriteriaDescription {...props}/>
+      <br/>
     {completeOptions}
     <br/>
     <QualGroups {...props}/>
@@ -124,7 +124,7 @@ const Criteria = (props) => {
   return (
   <div> 
   <bs.FormGroup>
-		<bs.Checkbox onChange={ e => props.criteriaLive()} value={props.availableQuals[props.selectedQual].live}>Is Live?</bs.Checkbox>
+		<bs.Checkbox onChange={ e => props.criteriaLive()} checked={props.availableQuals[props.selectedQual].live}>Is Live?</bs.Checkbox>
 	</bs.FormGroup>
   <CriteriaItems {...props} />
   </div>)}
