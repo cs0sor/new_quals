@@ -14,3 +14,4 @@ export const searchUnits = (term) => ({
   type: types.SEARCH_UNITS,
   term
 })
+

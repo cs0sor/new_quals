@@ -53,6 +53,25 @@ export default (state = initialData, action) => {
   switch (action.type) {
     case types.QUALIFICATION_SAVED:
       return {...state, savable: false}
+    case types.CRITERIA_LIVE:
+      return {
+        ...state,savable:true,
+        availableQuals: {
+          ...state.availableQuals,
+          [state.selectedQual]: {
+            ...state.availableQuals[state.selectedQual],
+            live: ! state.availableQuals[state.selectedQual].live,
+          }}}
+    case types.UPDATE_CRITERIA_TEXT:
+      const cs = {...state,
+        savable: true,
+        criteria: {
+          ...state.criteria,
+          [action.criteriaId]:
+            {...state.criteria[action.criteriaId],
+              text: action.text}}}
+      return cs
+
     case types.UPDATE_QUALIFICATION_TITLE:
       return {
         ...state,
@@ -62,8 +81,10 @@ export default (state = initialData, action) => {
             ...state.availableQuals[state.selectedQual],
             title: action.value}
         }}
+
     case types.SET_QUALIFICATION_STATE:
       return action.payload
+
     case types.ADD_QUALIFICATION:
       let nextID = nextObjKey(state.availableQuals)
       return {
@@ -88,17 +109,18 @@ export default (state = initialData, action) => {
         units: state.groups[action.selected.groupId].units.concat(action.selected.unitId)
       }
       return { ...state, savable: true, groups: { ...state.groups, [action.selected.groupId]: updatedGroup } }
+    
     case types.UPDATE_GROUP_TITLE:
       return {...state, savable: true, groups: {...state.groups, [action.groupId]: {...state.groups[action.groupId], title: action.value}}}
+    
     case types.REMOVE_UNIT_FROM_GROUP:
       const deletedUnitGroup = {
         ...state.groups[action.selected.groupId],
-        savable: true,
         units: [
           ...state.groups[action.selected.groupId].units.filter((unit) => unit !== action.selected.unitId)
         ]
       }
-      return { ...state, groups: { ...state.groups, [action.selected.groupId]: deletedUnitGroup } }
+      return { ...state, savable: true, groups: { ...state.groups, [action.selected.groupId]: deletedUnitGroup } }
 
     case types.ADD_NEW_GROUP:
       const newGroupKey = nextObjKey(state.groups)
@@ -109,7 +131,7 @@ export default (state = initialData, action) => {
         groups: { ...state.groups, [newGroupKey]: { qualId: state.selectedQual, units: [], title: `Group ${newGroupKey} title...`,  } },
         criteria: {
           ...state.criteria,
-          [newCriteriaKey]: { qualId: state.selectedQual, type: OPTIONAL, criteria: COMPLETE_ON_CREDITS, minimumScore: 0, groups: [ newGroupKey ] }
+          [newCriteriaKey]: { qualId: state.selectedQual, type: OPTIONAL, text: '', criteria: COMPLETE_ON_CREDITS, minimumScore: 0, groups: [ newGroupKey ] }
         }
       }
 
@@ -154,7 +176,8 @@ export default (state = initialData, action) => {
         savable: true,
         criteria: {...state.criteria, [action.payload.criteria]: {...state.criteria[action.payload.criteria],
           criteria: action.payload.value,
-          minimumScore: 0}
+          minimumScore: 0,
+          }
       }}
 
     case types.SET_CRITERIA_TYPE:
@@ -188,15 +211,19 @@ export default (state = initialData, action) => {
         }),
         {}
       )
-
+      
       const delGroupCritRemoveEmpty = Object.keys(delGroupCrit).reduce(
         (previous, item) =>
           delGroupCrit[item].groups.length > 0 ? {...previous, [item]:delGroupCrit[item]}:{...previous}, {})
-      const delGroup = Object.keys(state.groups).reduce(
-        (previous, item) =>
-          item !== action.groupId ? { ...previous, [item]: { ...state.groups[item] } } : { ...previous },
-        {}
-      )
+
+      const delGroup = Object.keys(delGroupCritRemoveEmpty).length > 0
+        ? 
+          Object.keys(state.groups).reduce(
+          (previous, item) =>
+            item !== action.groupId ? { ...previous, [item]: { ...state.groups[item] } } : { ...previous },
+          {})
+        : 
+          {}
       return { ...state, savable: true, criteria: delGroupCritRemoveEmpty, groups: delGroup }
     default:
       return state
@@ -213,6 +240,7 @@ export const getSelectedGroupedUnits = (state) => {
 
 // Given a qual id, this iterates through groups generating a key value pair of unit:group but
 // also adds those units not in groups and gives them the key:value of key:undefined
+// TODO: Optimize
 export const getAllGroupedUnits = (state) => {
   const groupedUnits = getSelectedGroupedUnits(state)
   return { ...Object.keys(state.units).reduce((result, v) => ({ ...result, [v]: undefined }), {}), ...groupedUnits }

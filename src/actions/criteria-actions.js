@@ -26,3 +26,13 @@ export const setCriteriaType = (payload) => ({
     criteria: payload.criteria,
     criteriaType: payload.type
 })
+
+export const updateCriteriaText = (payload) => ({
+    type: types.UPDATE_CRITERIA_TEXT,
+    text: payload.text,
+    criteriaId: payload.criteriaId
+})
+
+export const criteriaLive = () => ({
+    type: types.CRITERIA_LIVE,
+})

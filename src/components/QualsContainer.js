@@ -16,7 +16,17 @@ const mapStateToProps = (state, ownProps) => ({
   qualGroups: state.qualReducer.groups,
   selectedQualGroups: getQualificationGroups(state),
   savable: state.qualReducer.savable,
-  savableData: {groups: state.qualReducer.groups, criteria: state.qualReducer.criteria, selectedQual: state.qualReducer.selectedQual}
+  dataLoaded: state.qualReducer.dataLoaded,
+  savableData: {
+    groups: state.qualReducer.groups,
+    criteria: state.qualReducer.criteria,
+    selectedQual: state.qualReducer.selectedQual,
+    live: state.qualReducer.selectedQual
+      ? 
+      state.qualReducer.availableQuals[state.qualReducer.selectedQual].live
+      :
+      false,
+  }
 })
 
 const mapDispatchToProps = (dispatch) =>

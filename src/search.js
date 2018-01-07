@@ -5,7 +5,7 @@ const fuzzySearch = {
   init(units) {
     this.searcher = new FuzzySearch(
       Object.keys(units).map(key => ({...units[key], key})),
-      ['name'], {
+      ['name', 'id'], {
       caseSensitive: false,
       sort: true,
     })

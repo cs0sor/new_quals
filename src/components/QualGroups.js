@@ -45,24 +45,27 @@ const Group = (props) => {
     <DropDownSubmit options={mergeOptions(props)} context={{group: props.group.groupId, criteria: props.criteriaId}} submitAction={props.mergeGroup} placeholder="Merge into ..."/>
   return (
     <div>
-      <h5>{props.titleId}</h5>
-      <DebounceInput
-        style={{ width: 400 }}
-        minLength={2}
-        debounceTimeout={100}
-        value={props.group.title}
-        onChange={ e => props.updateGroupTitle({value: e.target.value, groupId: props.group.groupId})} />
-
-      <bs.Table striped bordered condensed hover>
-        <Header headers={headerData} />
-        <Body {...props} />
-      </bs.Table>
-      <bs.ButtonGroup bsSize="small" className='merge-groups'>
-        {splitOrMergeGroups}
-        <bs.Button className="delete-group" onClick={() => props.deleteGroup(props.group.groupId)}>
-          <span className="glyphicon glyphicon-remove-circle" aria-hidden="true" /> Delete
-        </bs.Button>
-      </bs.ButtonGroup>
+      <bs.Panel header={props.titleId} bsStyle="info">
+        <DebounceInput
+          style={{ width: '400px' }}
+          placeholder="group name..."
+          className="form-control"
+          minLength={2}
+          debounceTimeout={100}
+          value={props.group.title}
+          onChange={ e => props.updateGroupTitle({value: e.target.value, groupId: props.group.groupId})} />
+        <br/>
+        <bs.Table striped bordered condensed hover>
+          <Header headers={headerData} />
+          <Body {...props} />
+        </bs.Table>
+        <bs.ButtonGroup bsSize="small" className='merge-groups'>
+          {splitOrMergeGroups}
+          <bs.Button className="delete-group" onClick={() => props.deleteGroup(props.group.groupId)}>
+            <span className="glyphicon glyphicon-remove-circle" aria-hidden="true" /> Delete
+          </bs.Button>
+        </bs.ButtonGroup>
+      </bs.Panel>
     </div>
   )
 }

@@ -7,7 +7,7 @@ const qualificationSaved = () => (
 
 export function saveQualification(payload) {
   return function(dispatch) {
-    fetch('http://127.0.0.1:6543/qualification.json/put.json', {
+    fetch('/qualification.json/put.json', {
         method: 'post',
         body: JSON.stringify(payload),
       }).then(response => response.json()
@@ -36,7 +36,8 @@ function configureData(payload) {
       [payload.qualification.id]:
         {
           id: payload.qualification.id,
-          title: payload.qualification.title
+          title: payload.qualification.title,
+          live: payload.qualification.live,
         }
       },
     selectedQual: payload.qualification.id,
@@ -51,7 +52,7 @@ function configureData(payload) {
 
 export function getQualification(qualId) {
   return function(dispatch) {
-    fetch('http://127.0.0.1:6543/qualification.json/get.json', {
+    fetch('/qualification.json/get.json', {
         method: 'post',
         body: JSON.stringify({qual_id: qualId}),
       }).then(response => response.json()

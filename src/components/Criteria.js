@@ -1,7 +1,7 @@
 import React from 'react'
 import * as bs from 'react-bootstrap/lib/'
 import QualGroups from '../components/QualGroups'
-import {COMPLETE_ON_CREDITS, COMPLETE_ON_UNITS, OPTIONAL} from '../reducers/quals-reducer'
+import {COMPLETE_ON_CREDITS, COMPLETE_ON_UNITS, OPTIONAL, MANDITORY} from '../reducers/quals-reducer'
 
 export function creditsTotal(criteria, qualGroups, units) {
   return criteria.groups.reduce(
@@ -15,6 +15,47 @@ export function unitsTotal(criteria, qualGroups, units) {
   , 0)
 }
 
+class CriteriaDescription extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      text: this.props.criteriaGroup.text,
+      criteriaId: this.props.criteriaId,
+      savable: false,
+    }
+    this.handleUpdatedText = this.handleUpdatedText.bind(this)
+    this.updateText = this.updateText.bind(this)
+  }
+
+  updateText(value) {
+    this.setState({
+      text: value,
+      savable: true,
+    })
+  }
+
+  handleUpdatedText() {
+    this.props.updateCriteriaText(
+      this.state,
+    )
+  }
+
+  render() {
+    return (
+      <div>
+        <h5>Criteria Description:</h5>
+        <bs.FormControl
+          componentClass="textarea"
+          value={this.state.text}
+          onChange={e => this.updateText(e.target.value)}
+          placeholder="Criteria description..." />
+        <br/>
+        <bs.Button bsStyle="success" disabled={!this.state.savable} onClick={e => this.handleUpdatedText()}>Update Text</bs.Button>
+      </div>
+    )
+  }
+}
+
 const CriteriaItem = (props) => {
 
   const criteria = props.criteria[props.criteriaId]
@@ -25,6 +66,9 @@ const CriteriaItem = (props) => {
 
   const completeOptions = criteria.type === OPTIONAL
     ? <div>
+      <CriteriaDescription {...props}/>
+      <br/>
+      <h5>Completion Criteria:</h5>
       <bs.FormControl
         componentClass="select"
         className="score-criteria"
@@ -43,35 +87,48 @@ const CriteriaItem = (props) => {
         {[...Array(total).keys()].map(item => <option key={item + 1} value={item + 1}>{item + 1}</option>)}
       </bs.FormControl>
     </div>
-    : null
+    : <h5>Candidates need to complete all Units</h5>
   
 
-  return <bs.Panel header={props.title}>
-    <QualGroups {...props}/>
+  return <bs.Panel header={props.title} bsStyle="primary">
+
     <bs.FormGroup>
+    <br/>
       <bs.Radio
-        name="optionsGroup"
+        name={`options-manditory-${props.criteriaId}`}
         checked={criteria.type === 'MANDITORY'}
-        onChange={ e => props.setCriteriaType({criteria: props.criteriaId, type:'MANDITORY'})}
+        onChange={ e => props.setCriteriaType({criteria: props.criteriaId, type:MANDITORY})}
         inline>
         Manditory
       </bs.Radio >
       {' '}
       <bs.Radio
-        name="optionsGroup"
+        name={`options-optional-${props.criteriaId}`}
         checked={criteria.type === 'OPTIONAL'}
-        onChange={ e => props.setCriteriaType({criteria: props.criteriaId, type:'OPTIONAL'})}
+        onChange={ e => props.setCriteriaType({criteria: props.criteriaId, type:OPTIONAL})}
         inline>
         Optional
       </bs.Radio>
       </bs.FormGroup>
-    {completeOptions} 
+    {completeOptions}
+    <br/>
+    <QualGroups {...props}/>
   </bs.Panel>}
 
-
-const Criteria = (props) => 
+const CriteriaItems = (props) => 
   Object.entries(props.criteria)
   .map(item => <CriteriaItem {...props} criteriaGroup={item[1]} criteriaId={item[0]} title={`Criteria ${item[0]}`} key={item[0]}/>)
+
+
+const Criteria = (props) => {
+  return (
+  <div> 
+  <bs.FormGroup>
+		<bs.Checkbox onChange={ e => props.criteriaLive()} value={props.availableQuals[props.selectedQual].live}>Is Live?</bs.Checkbox>
+	</bs.FormGroup>
+  <CriteriaItems {...props} />
+  </div>)}
+
 
 export default Criteria
 
