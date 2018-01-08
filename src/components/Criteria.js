@@ -97,7 +97,7 @@ const CriteriaItem = (props) => {
         checked={criteria.type === 'MANDITORY'}
         onChange={ e => props.setCriteriaType({criteria: props.criteriaId, type:MANDITORY})}
         inline>
-        Manditory
+        Mandatory
       </bs.Radio >
       {' '}
       <bs.Radio
